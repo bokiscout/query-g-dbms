@@ -1,23 +1,13 @@
 #include <iostream>
-#include "query-g-libraray-headers\query-g-libraray.h"
-#include "query-g-libraray-headers\book.h"
+#include "main.h"
 
 using namespace std;
 using namespace qgl;
 
 int main() {
+	
+	demo_increse_book_id();
 
-	QGLibraray qgl;
-	Book *b = new Book();
-
-	b->print_details();
-
-	qgl.increse_book_id(b, 3);
-	b->print_details();
-
-	char dammy;
-	scanf("%c", &dammy);
-
-	free(b);
+	termianate_program();
 	return 0;
 }
