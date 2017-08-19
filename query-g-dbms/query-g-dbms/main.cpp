@@ -97,6 +97,10 @@ void benchmark_increse_books_outhor_id(Book *books_list, int num_books, int ammo
 	qgl.increse_books_outhor_id(books_list, num_books, ammount);
 }
 
+void benchmark_agregate_function(Book *books_list, int num_books, int ammount) {
+	benchmark_increse_books_outhor_id(books_list, num_books, ammount);
+}
+
 void termianate_program() {
 	char dammy;
 
@@ -116,8 +120,8 @@ int main() {
 	cout << "Original: " << endl;
 	print_books(books_list, &num_books);
 
-	benchmark_increse_books_outhor_id(books_list, num_books, ammount);
-
+	benchmark_agregate_function(books_list, num_books, ammount);
+	
 	cout << endl <<"Incressed: " << endl;
 	print_books(books_list, &num_books);
 
