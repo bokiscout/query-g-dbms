@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h" />
+    <ClInclude Include="query-g-libraray-headers\author-book.h" />
     <ClInclude Include="query-g-libraray-headers\author.h" />
     <ClInclude Include="query-g-libraray-headers\book.h" />
     <ClInclude Include="query-g-libraray-headers\query-g-libraray.h" />

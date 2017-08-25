@@ -1,5 +1,7 @@
 ﻿  main.cpp
-d:\documents_wd\github\query-g-dbms\query-g-dbms\query-g-dbms\main.cpp(95): warning C4101: 'time_gpu': unreferenced local variable
-d:\documents_wd\github\query-g-dbms\query-g-dbms\query-g-dbms\main.cpp(94): warning C4101: 'time_cpu': unreferenced local variable
+d:\documents_wd\github\query-g-dbms\query-g-dbms\query-g-dbms\main.cpp(180): warning C4101: 'time_gpu': unreferenced local variable
+d:\documents_wd\github\query-g-dbms\query-g-dbms\query-g-dbms\main.cpp(179): warning C4101: 'time_cpu': unreferenced local variable
+d:\documents_wd\github\query-g-dbms\query-g-dbms\query-g-dbms\main.cpp(195): warning C4101: 'time_gpu': unreferenced local variable
+d:\documents_wd\github\query-g-dbms\query-g-dbms\query-g-dbms\main.cpp(194): warning C4101: 'time_cpu': unreferenced local variable
   query-g-dbms.vcxproj -> D:\Documents_WD\GitHub\query-g-dbms\query-g-dbms\x64\Debug\query-g-dbms.exe
   query-g-dbms.vcxproj -> D:\Documents_WD\GitHub\query-g-dbms\query-g-dbms\x64\Debug\query-g-dbms.pdb (Partial PDB)
