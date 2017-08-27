@@ -1,0 +1,10 @@
+﻿  main.cpp
+main.cpp(254): warning C4101: 'time_gpu': unreferenced local variable
+main.cpp(253): warning C4101: 'time_cpu': unreferenced local variable
+  Generating code
+  3 of 215 functions ( 1.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  query-g-dbms.vcxproj -> D:\Documents_WD\GitHub\query-g-dbms\query-g-dbms\x64\Release\query-g-dbms.exe
+  query-g-dbms.vcxproj -> D:\Documents_WD\GitHub\query-g-dbms\query-g-dbms\x64\Release\query-g-dbms.pdb (Full PDB)

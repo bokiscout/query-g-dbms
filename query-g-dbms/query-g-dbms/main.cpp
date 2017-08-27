@@ -2,12 +2,84 @@
 #include <fstream>
 #include <sstream> 
 
+#include <time.h>
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #include "main.h"
+
 
 //#define DEBUG
 
 using namespace std;
 using namespace qgl;
+
+
+void print_cartesian_cpu(AuthorBook *cartesian, int num_authors, int num_books) {
+	int i, j;
+	int current = 0;
+
+	for (i = 0; i < num_authors; i++)
+	{
+		for (j = 0; j < num_books; j++)
+		{
+			current++;
+
+			printf("%d\n", current);
+			cartesian[i + j].print_details();
+			printf("\n");
+		}
+	}
+}
+
+void benchmark_cartesian_product_gpu(Author *author_list, const int num_authors, Book *books_list, const int num_books) {
+	cout << "cartesion product on GPU" << endl;
+
+	cout << endl;
+	cout << "Authors: " << num_authors << endl;
+	cout << "Books:   " << num_books << endl;
+
+	cout << endl;
+	cout << "Cartesian product: " << num_authors * num_books << " elements" << endl;
+
+	QGLibraray qgl;
+
+	// on windows this is wall time
+	// on linux this is cpu time
+	clock_t begin = clock();
+
+	qgl.cartesian_product(author_list, num_authors, books_list, num_books);
+
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("Total time: %.2f\n\n", time_spent);
+}
+
+void benchmark_cartesian_product_cpu(Author *author_list, int num_authors, Book *books_list, int num_books) {
+	cout << "cartesion product on CPU" << endl;
+
+	cout << endl;
+	cout << "Authors: " << num_authors << endl;
+	cout << "Books:   " << num_books << endl;
+
+	cout << endl;
+	cout << "Cartesian product: " << num_authors * num_books << " elements" << endl << endl;
+	
+	QGLibraray qgl;
+
+	// on windows this is wall time
+	// on linux this is cpu time
+	clock_t begin = clock();
+
+	qgl.cartesian_product_cpu(author_list, num_authors, books_list, num_books);
+
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("Total time: %.2f\n\n", time_spent);
+}
 
 void read_books(Book *books_ptr, const int *num_books_ptr) {
 	ifstream books_file("D:\\Downloads_WD\\UnstructuredDB_v2\\UnstructuredDB\\bin\\books.xml");
@@ -160,6 +232,7 @@ void print_books(Book *books_list, const int *num_books) {
 	int i;
 	for (i = 0; i < *num_books; i++) {
 		//cout << "book_list[" << i << "]:" << endl;
+		cout << i << endl;
 		books_list[i].print_details();
 		cout << endl;
 	}
@@ -168,6 +241,7 @@ void print_books(Book *books_list, const int *num_books) {
 void print_authors(Author *author_list, const int *num_authors) {
 	int i;
 	for (i = 0; i < *num_authors; i++) {
+		cout << i << endl;
 		author_list[i].print_details();
 		cout << endl;
 	}
@@ -186,16 +260,7 @@ void benchmark_agregate_function(Book *books_list, int num_books, int ammount) {
 	benchmark_increse_books_outhor_id(books_list, num_books, ammount);
 }
 
-void benchmark_cartesian_product(Author *author_list,const int num_authors, Book *books_list, const int num_books) {
-	cout << "cartesion product" << endl;
-	
-	QGLibraray qgl;
 
-	unsigned long time_cpu;
-	unsigned long time_gpu;
-
-	qgl.cartesian_product(author_list, num_authors, books_list, num_books);
-}
 
 void termianate_program() {
 	char dammy;
@@ -207,10 +272,16 @@ void termianate_program() {
 int main() {
 
 	//const int num_books = 123;
-	const int num_books = 5;
+	//const int num_books = 460;
+	const int num_books = 2000;		// <-- good for GPU
+	//const int num_books = 4000;
+	//const int num_books = 5;
 
+	//const int num_authors = 123;
 	//const int num_authors = 12;
-	const int num_authors = 5;
+	//const int num_authors = 462;
+	const int num_authors = 4000;	// <-- good for GPU
+	//const int num_authors = 5;
 
 	int ammount = 5;
 
@@ -222,7 +293,7 @@ int main() {
 											// pass pointer to the memory address used to store number of books
 
 	//cout << "Original: " << endl;
-	print_books(books_list, &num_books);
+	//print_books(books_list, &num_books);
 
 	//benchmark_agregate_function(books_list, num_books, ammount);
 	
@@ -233,9 +304,9 @@ int main() {
 	read_authors(author_list, &num_authors);
 	
 	//cout << "Original: " << endl;
-	print_authors(author_list, &num_authors);
-
-	benchmark_cartesian_product(author_list, num_authors, books_list, num_books);
+	//print_authors(author_list, &num_authors);
+	benchmark_cartesian_product_cpu(author_list, num_authors, books_list, num_books);
+	benchmark_cartesian_product_gpu(author_list, num_authors, books_list, num_books);
 
 	termianate_program();
 
