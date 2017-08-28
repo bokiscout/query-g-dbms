@@ -18,7 +18,7 @@ using namespace std;
 using namespace qgl;
 
 
-void print_cartesian_cpu(AuthorBook *cartesian, int num_authors, int num_books) {
+void print_cartesian_cpu(AuthorBook *cartesian, unsigned long num_authors, unsigned long num_books) {
 	int i, j;
 	int current = 0;
 
@@ -35,7 +35,7 @@ void print_cartesian_cpu(AuthorBook *cartesian, int num_authors, int num_books) 
 	}
 }
 
-void benchmark_cartesian_product_gpu(Author *author_list, const int num_authors, Book *books_list, const int num_books) {
+void benchmark_cartesian_product_gpu(Author *author_list, const  unsigned long num_authors, Book *books_list, const int num_books) {
 	cout << "cartesion product on GPU" << endl;
 
 	cout << endl;
@@ -58,7 +58,7 @@ void benchmark_cartesian_product_gpu(Author *author_list, const int num_authors,
 	printf("Total time: %.2f\n\n", time_spent);
 }
 
-void benchmark_cartesian_product_cpu(Author *author_list, int num_authors, Book *books_list, int num_books) {
+void benchmark_cartesian_product_cpu(Author *author_list, unsigned long num_authors, Book *books_list, unsigned long num_books) {
 	cout << "cartesion product on CPU" << endl;
 
 	cout << endl;
@@ -81,7 +81,7 @@ void benchmark_cartesian_product_cpu(Author *author_list, int num_authors, Book 
 	printf("Total time: %.2f\n\n", time_spent);
 }
 
-void read_books(Book *books_ptr, const int *num_books_ptr) {
+void read_books(Book *books_ptr, const unsigned long *num_books_ptr) {
 	ifstream books_file("D:\\Downloads_WD\\UnstructuredDB_v2\\UnstructuredDB\\bin\\books.xml");
 
 	string line_1;
@@ -95,8 +95,8 @@ void read_books(Book *books_ptr, const int *num_books_ptr) {
 	int invenatr_id;
 	int author_id;
 
-	int num_books = 0;
-	int current_book_position = 0;
+	unsigned long num_books = 0;
+	unsigned long current_book_position = 0;
 
 	while (!books_file.eof() && current_book_position < *num_books_ptr)
 	{
@@ -151,7 +151,7 @@ void read_books(Book *books_ptr, const int *num_books_ptr) {
 	books_file.close();
 }
 
-void read_authors(Author *authors_ptr, const int *num_authors_ptr) {
+void read_authors(Author *authors_ptr, const  unsigned long *num_authors_ptr) {
 	ifstream authors_file("D:\\Downloads_WD\\UnstructuredDB_v2\\UnstructuredDB\\bin\\authors.xml");
 
 	string line_1;
@@ -167,8 +167,8 @@ void read_authors(Author *authors_ptr, const int *num_authors_ptr) {
 	string last_name;
 	int author_id;
 
-	int num_authors = 0;
-	int current_author_position = 0;
+	unsigned long num_authors = 0;
+	unsigned long current_author_position = 0;
 
 	while (!authors_file.eof() && current_author_position < *num_authors_ptr)
 	{
@@ -225,11 +225,10 @@ void read_authors(Author *authors_ptr, const int *num_authors_ptr) {
 #endif // DEBUG
 
 	authors_file.close();
-
 }
 
-void print_books(Book *books_list, const int *num_books) {
-	int i;
+void print_books(Book *books_list, const unsigned long *num_books) {
+	unsigned long i;
 	for (i = 0; i < *num_books; i++) {
 		//cout << "book_list[" << i << "]:" << endl;
 		cout << i << endl;
@@ -238,7 +237,7 @@ void print_books(Book *books_list, const int *num_books) {
 	}
 }
 
-void print_authors(Author *author_list, const int *num_authors) {
+void print_authors(Author *author_list, const unsigned long *num_authors) {
 	int i;
 	for (i = 0; i < *num_authors; i++) {
 		cout << i << endl;
@@ -247,19 +246,90 @@ void print_authors(Author *author_list, const int *num_authors) {
 	}
 }
 
-void benchmark_increse_books_outhor_id(Book *books_list, int num_books, int ammount) {
+void benchmark_increse_books_outhor_id(Book *books_list, unsigned long num_books, unsigned long ammount) {
+	cout << "Agregate function [increse] on GPU" << endl;
+
+	cout << endl;
+	cout << "Books:   " << num_books << endl;
+
 	QGLibraray qgl;
 
-	unsigned long time_cpu;
-	unsigned long time_gpu;
+	// on windows this is wall time
+	// on linux this is cpu time
+	clock_t begin = clock();
 
 	qgl.increse_books_outhor_id(books_list, num_books, ammount);
+
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("Total time: %.2f\n\n", time_spent);
 }
 
-void benchmark_agregate_function(Book *books_list, int num_books, int ammount) {
+void benchmark_increse_books_outhor_id_cpu(Book *books_list, unsigned long num_books, int ammount) {
+	cout << "Agregate function [increse] on CPU" << endl;
+
+	cout << endl;
+	cout << "Books:   " << num_books << endl;
+
+	QGLibraray qgl;
+
+	// on windows this is wall time
+	// on linux this is cpu time
+	clock_t begin = clock();
+
+	qgl.increse_books_outhor_id_cpu(books_list, num_books, ammount);
+	
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("Total time: %.2f\n\n", time_spent);
+}
+
+void benchmark_agregate_function(Book *books_list, unsigned long num_books, int ammount) {
+	// on CPU
+	benchmark_increse_books_outhor_id_cpu(books_list, num_books, ammount);
+
+	// on GPU
 	benchmark_increse_books_outhor_id(books_list, num_books, ammount);
 }
 
+void benchmark_agregate_sum_cpu(Book *books, unsigned long num_books)
+{
+	cout << "Agregate function [sum] on CPU" << endl;
+
+	QGLibraray qgl;
+
+	// on windows this is wall time
+	// on linux this is cpu time
+	clock_t begin = clock();
+
+	qgl.agregate_sum_cpu(books, num_books);
+
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("Total time: %.2f\n\n", time_spent);
+}
+
+void benchmark_agregate_sum_gpu(Book *books, unsigned long num_books)
+{
+	cout << "Agregate function [sum] on GPU" << endl;
+
+	QGLibraray qgl;
+	// on windows this is wall time
+	// on linux this is cpu time
+	clock_t begin = clock();
+
+	qgl.agregate_sum(books, num_books);
+
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("Total time: %.2f\n\n", time_spent);
+}
+
+void benchmark_agregate_sum(Book *books, unsigned long num_books) {
+	benchmark_agregate_sum_cpu(books, num_books);
+
+	benchmark_agregate_sum_gpu(books, num_books);
+}
 
 
 void termianate_program() {
@@ -271,22 +341,25 @@ void termianate_program() {
 
 int main() {
 
-	//const int num_books = 123;
+	//const unsigned long num_books = 150;
 	//const int num_books = 460;
-	const int num_books = 2000;		// <-- good for GPU
+	//const int num_books = 2000;		// <-- good for GPU
 	//const int num_books = 4000;
 	//const int num_books = 5;
+	const unsigned long num_books = 65534;		// <-- max value
+	//const unsigned long num_books = 40000;
+	//const int num_books = 8;
 
 	//const int num_authors = 123;
 	//const int num_authors = 12;
 	//const int num_authors = 462;
-	const int num_authors = 4000;	// <-- good for GPU
+	//const int num_authors = 4000;	// <-- good for GPU
 	//const int num_authors = 5;
 
 	int ammount = 5;
 
-	Book books_list[num_books];
-	Author author_list[num_authors];
+	Book *books_list = new Book[num_books];
+	//Author author_list[num_authors];
 
 	// books
 	read_books(books_list, &num_books);		// pass pointer to the memory address alocated for the list of books
@@ -301,12 +374,17 @@ int main() {
 	//print_books(books_list, &num_books);
 
 	// authors
-	read_authors(author_list, &num_authors);
+	//read_authors(author_list, &num_authors);
 	
 	//cout << "Original: " << endl;
 	//print_authors(author_list, &num_authors);
-	benchmark_cartesian_product_cpu(author_list, num_authors, books_list, num_books);
-	benchmark_cartesian_product_gpu(author_list, num_authors, books_list, num_books);
+	//benchmark_cartesian_product_cpu(author_list, num_authors, books_list, num_books);
+	//benchmark_cartesian_product_gpu(author_list, num_authors, books_list, num_books);
+
+	// agregate sum
+	benchmark_agregate_sum(books_list, num_books);
+
+	delete[] books_list;
 
 	termianate_program();
 
